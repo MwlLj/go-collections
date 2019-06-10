@@ -8,12 +8,18 @@ type CStringSet struct {
 	m map[string]int
 }
 
-func StringSetFromList(li *[]string) *CStringSet {
-	s := CStringSet{}
-	for _, item := range *li {
-		(s.m)[item] = 0
+func (this *CStringSet) IsEqual(other *CStringSet) bool {
+	if len(this.m) != len(other.m) {
+		return false
 	}
-	return &s
+	ret := true
+	for key, _ := range this.m {
+		if _, ok := other.m[key]; !ok {
+			ret = false
+			break
+		}
+	}
+	return ret
 }
 
 func (this *CStringSet) Push(s *string) {
@@ -46,6 +52,19 @@ func (this CStringSet) String() string {
 func StringSetNew() *CStringSet {
 	s := CStringSet{
 		m: make(map[string]int),
+	}
+	return &s
+}
+
+func StringSetFromList(li *[]string) *CStringSet {
+	if li == nil {
+		return nil
+	}
+	s := CStringSet{
+		m: make(map[string]int),
+	}
+	for _, item := range *li {
+		(s.m)[item] = 0
 	}
 	return &s
 }
