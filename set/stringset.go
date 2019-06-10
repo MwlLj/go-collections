@@ -1,7 +1,19 @@
 package set
 
+import (
+	"bytes"
+)
+
 type CStringSet struct {
 	m map[string]int
+}
+
+func StringSetFromList(li *[]string) *CStringSet {
+	s := CStringSet{}
+	for _, item := range *li {
+		(s.m)[item] = 0
+	}
+	return &s
 }
 
 func (this *CStringSet) Push(s *string) {
@@ -21,6 +33,14 @@ func (this *CStringSet) List() *[]string {
 		l = append(l, key)
 	}
 	return &l
+}
+
+func (this CStringSet) String() string {
+	buffer := bytes.Buffer{}
+	for key, _ := range this.m {
+		buffer.WriteString(key)
+	}
+	return buffer.String()
 }
 
 func StringSetNew() *CStringSet {
